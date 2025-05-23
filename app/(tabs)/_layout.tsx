@@ -1,43 +1,54 @@
-import { Tabs } from 'expo-router';
 import React from 'react';
-import { Platform } from 'react-native';
-
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { Tabs } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }),
-      }}>
+        tabBarActiveTintColor: '#F5C8BD', // SCÉAL text color
+        tabBarInactiveTintColor: '#666', // Adjust as needed for dark theme
+        tabBarStyle: {
+          backgroundColor: '#222', // Dark background for tab bar
+          borderTopWidth: 0,
+          elevation: 0, // Remove shadow on Android
+        },
+        headerStyle: {
+          backgroundColor: '#222', // Dark header background
+        },
+        headerTintColor: '#F5C8BD', // SCÉAL text color for header title/buttons
+        headerTitleStyle: {
+          fontFamily: 'Poppins_700Bold', // SCÉAL font
+        },
+        tabBarLabelStyle: {
+          fontFamily: 'Poppins_400Regular', // SCÉAL font
+        },
+      }}
+    >
       <Tabs.Screen
-        name="index"
+        name="recents"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: 'Recents',
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="chatbubbles-sharp" size={24} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="requests"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: 'Requests',
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="person-add" size={24} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="add-contact"
+        options={{
+          title: 'Add Contact',
+          tabBarButton: () => null, // Hide this tab from the tab bar
+          headerShown: true, // Show header for this screen
         }}
       />
     </Tabs>
