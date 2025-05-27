@@ -1,19 +1,18 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  Alert,
-  Image,
-  ScrollView,
-} from 'react-native';
-import { router } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
+import { router } from 'expo-router';
+import React, { useState } from 'react';
+import {
+    Alert,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Ionicons } from '@expo/vector-icons';
 import { COLORS, FONTS, commonStyles } from '../constants/styles';
 
 export default function LoginScreen() {
@@ -27,9 +26,11 @@ export default function LoginScreen() {
     }
 
     try {
-      // In a real app, you would validate credentials with a backend
-      await AsyncStorage.setItem('user', JSON.stringify({ email })); // Store email instead of username
-      router.replace('/');
+      // Clear any existing data first
+      await AsyncStorage.clear();
+      // Store new user data
+      await AsyncStorage.setItem('user', JSON.stringify({ email }));
+      router.replace('/chat');
     } catch (error) {
       Alert.alert('Error', 'Failed to login');
     }
