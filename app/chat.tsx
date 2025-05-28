@@ -13,6 +13,9 @@ const chatRooms = [
   { id: '5', user: 'Louisa McCoy', lastMessage: 'Read this article, it is so sad... awesome...', time: '12:35', unreadCount: 0, avatar: 'https://randomuser.me/api/portraits/women/5.jpg' },
   { id: '6', user: 'Jasmine Freeman', lastMessage: 'Are you sure?', time: '12:35', unreadCount: 0, avatar: 'https://randomuser.me/api/portraits/women/6.jpg' },
   { id: '7', user: 'Marie Lucas', lastMessage: 'I know that.', time: '12:35', unreadCount: 0, avatar: 'https://randomuser.me/api/portraits/women/7.jpg' },
+  { id: '8', user: 'Sara Sanders', lastMessage: 'Can you buy me dinner?', time: '12:35', unreadCount: 100, avatar: 'https://randomuser.me/api/portraits/women/1.jpg' },
+  { id: '9', user: 'Sara Sanders', lastMessage: 'Can you buy me dinner?', time: '12:35', unreadCount: 100, avatar: 'https://randomuser.me/api/portraits/women/1.jpg' },
+
 ];
 
 
@@ -61,53 +64,54 @@ export default function ChatScreen() {
   );
 
   return (
-    <LinearGradient
-      colors={[COLORS.background.start, COLORS.background.end]}
-      style={styles.container}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-    >
+    <View style={styles.outerContainer}>
       <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
       <SafeAreaView style={styles.safeArea}>
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => router.push('/settings')}>
-            <Image source={{ uri: 'https://randomuser.me/api/portraits/men/1.jpg' }} style={styles.headerAvatar} />
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>Chats</Text>
-          <TouchableOpacity style={styles.addButton}>
-            <Ionicons name="add" size={24} color="#fff" />
-          </TouchableOpacity>
-        </View>
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <TouchableOpacity onPress={() => router.push('/settings')}>
+              <Image source={{ uri: 'https://randomuser.me/api/portraits/men/1.jpg' }} style={styles.headerAvatar} />
+            </TouchableOpacity>
+            <Text style={styles.headerTitle}>Chats</Text>
+            <TouchableOpacity style={styles.addButton}>
+              <Ionicons name="add" size={24} color="#fff" />
+            </TouchableOpacity>
+          </View>
 
-        <View style={styles.searchContainer}>
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search chats..."
-            placeholderTextColor={COLORS.text.placeholder}
-            value={searchQuery}
-            onChangeText={(text) => {
-              setSearchQuery(text);
-              setFilteredChatRooms(
-                chatRooms.filter(room =>
-                  room.user.toLowerCase().includes(text.toLowerCase())
-                )
-              );
-            }}
+          <View style={styles.searchContainer}>
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Search chats..."
+              placeholderTextColor={COLORS.text.placeholder}
+              value={searchQuery}
+              onChangeText={(text) => {
+                setSearchQuery(text);
+                setFilteredChatRooms(
+                  chatRooms.filter(room =>
+                    room.user.toLowerCase().includes(text.toLowerCase())
+                  )
+                );
+              }}
+            />
+          </View>
+
+          <FlatList
+            data={filteredChatRooms}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={styles.listContent}
           />
         </View>
-
-        <FlatList
-          data={filteredChatRooms}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.listContent}
-        />
       </SafeAreaView>
-    </LinearGradient>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  outerContainer: {
+    flex: 1,
+    backgroundColor: COLORS.background.start,
+  },
   container: {
     flex: 1,
   },
