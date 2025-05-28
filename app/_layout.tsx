@@ -58,7 +58,7 @@ export default function RootLayout() {
         >
           <Stack.Screen 
             name="index" 
-            redirect={isAuthenticated ? '/chat' : undefined}
+            // redirect={isAuthenticated ? '/chat' : undefined}
           />
           <Stack.Screen name="login" />
           <Stack.Screen name="signup" />
