@@ -1,10 +1,10 @@
-# Sceal Chat App
+# SCÉAL Chat App
 
-In a world where digital connections often feel fleeting, Sceal brings meaning back to our relationships. Whether it's the laughter shared with friends, the milestones celebrated with loved ones, or the everyday moments that make life special, Sceal helps you capture and cherish these connections. It's more than just a chat app – it's a digital space where relationships flourish, memories are preserved, and bonds grow stronger. Every message, every shared memory, every captured moment becomes a thread in the beautiful tapestry of your relationships.
+In a world where digital connections often feel fleeting, SCÉAL brings meaning back to our relationships. Whether it's the laughter shared with friends, the milestones celebrated with loved ones, or the everyday moments that make life special, SCÉAL helps you capture and cherish these connections. It's more than just a chat app – it's a digital space where relationships flourish, memories are preserved, and bonds grow stronger. Every message, every shared memory, every captured moment becomes a thread in the beautiful tapestry of your relationships.
 
 A modern, feature-rich chat application built with React Native and Expo, designed to help you share and cherish special moments with the people who matter most.
 
-## Why Sceal?
+## Why SCÉAL?
 
 ### For Everyone
 - **Create Lasting Memories**: Transform everyday moments into cherished memories with our intuitive sharing system
