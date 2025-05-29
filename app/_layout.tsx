@@ -1,55 +1,126 @@
-import { Ionicons } from '@expo/vector-icons'; // Import Ionicons
-import { Stack, usePathname, useRouter } from 'expo-router'; // Import Stack and usePathname
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { COLORS } from '../constants/styles'; // Assuming COLORS is defined here or in a reachable path
+import { MaterialIcons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Stack, usePathname, useRouter } from 'expo-router';
+import { Platform, StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { COLORS } from '../constants/styles';
 
 export default function TabLayout() {
   const router = useRouter();
   const pathname = usePathname();
 
-  // Define the screens where the navigation bar should be visible
   const shouldShowNavBar = ['/chat', '/calendar', '/pending-requests'].includes(pathname);
 
   return (
-    <View style={styles.container}>
-      <Stack 
-        screenOptions={{ 
-          headerShown: false,
-          animation: 'fade',
-          presentation: 'transparentModal'
-        }} 
+    <LinearGradient
+      colors={[COLORS.background.start, COLORS.background.end]}
+      style={styles.gradientBackground}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+    >
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor="transparent"
+        translucent
       />
+      <View style={styles.container}>
+        <Stack 
+          screenOptions={{ 
+            headerShown: false,
+            animation: 'slide_from_right',
+            presentation: 'card',
+            contentStyle: { backgroundColor: 'transparent' },
+            animationDuration: 200,
+            gestureEnabled: true,
+            gestureDirection: 'horizontal',
+            fullScreenGestureEnabled: true,
+          }} 
+        >
+          <Stack.Screen 
+            name="settings" 
+            options={{ 
+              presentation: 'card',
+              animation: 'slide_from_right',
+            }} 
+          />
+          <Stack.Screen 
+            name="settings/profile" 
+            options={{ 
+              presentation: 'card',
+              animation: 'slide_from_right',
+            }} 
+          />
+          <Stack.Screen 
+            name="settings/privacy" 
+            options={{ 
+              presentation: 'card',
+              animation: 'slide_from_right',
+            }} 
+          />
+          <Stack.Screen 
+            name="settings/notifications" 
+            options={{ 
+              presentation: 'card',
+              animation: 'slide_from_right',
+            }} 
+          />
+          <Stack.Screen 
+            name="settings/about" 
+            options={{ 
+              presentation: 'card',
+              animation: 'slide_from_right',
+            }} 
+          />
+        </Stack>
 
-      {/* Only show navigation bar on specific screens */}
-      {shouldShowNavBar && (
-        <View style={styles.navigationBar}>
-          <TouchableOpacity 
-            style={[styles.navButton, pathname === '/chat' && styles.activeNavButton]} 
-            onPress={() => router.replace('/chat')}
-          >
-            <Ionicons name="chatbubbles-outline" size={24} color="white" />
-          </TouchableOpacity>
+        {shouldShowNavBar && (
+          <View style={styles.navigationBar}>
+            <TouchableOpacity 
+              style={[styles.navButton, pathname === '/chat' && styles.activeNavButton]} 
+              onPress={() => router.replace('/chat')}
+            >
+              <MaterialIcons 
+                name={pathname === '/chat' ? "chat" : "chat-bubble"} 
+                size={24} 
+                color={pathname === '/chat' ? "#FF6B00" : "white"} 
+                style={pathname === '/chat' ? styles.activeIcon : null}
+              />
+            </TouchableOpacity>
 
-          <TouchableOpacity 
-            style={[styles.navButton, pathname === '/calendar' && styles.activeNavButton]} 
-            onPress={() => router.replace('/calendar')}
-          >
-            <Ionicons name="calendar-outline" size={24} color="white" />
-          </TouchableOpacity>
+            <TouchableOpacity 
+              style={[styles.navButton, pathname === '/calendar' && styles.activeNavButton]} 
+              onPress={() => router.replace('/calendar')}
+            >
+              <MaterialIcons 
+                name={pathname === '/calendar' ? "event" : "event-note"} 
+                size={24} 
+                color={pathname === '/calendar' ? "#FF6B00" : "white"} 
+                style={pathname === '/calendar' ? styles.activeIcon : null}
+              />
+            </TouchableOpacity>
 
-          <TouchableOpacity 
-            style={[styles.navButton, pathname === '/pending-requests' && styles.activeNavButton]} 
-            onPress={() => router.replace('/pending-requests')}
-          >
-            <Ionicons name="person-add-outline" size={24} color="white" />
-          </TouchableOpacity>
-        </View>
-      )}
-    </View>
+            <TouchableOpacity 
+              style={[styles.navButton, pathname === '/pending-requests' && styles.activeNavButton]} 
+              onPress={() => router.replace('/pending-requests')}
+            >
+              <MaterialIcons 
+                name={pathname === '/pending-requests' ? "person-add" : "person"} 
+                size={24} 
+                color={pathname === '/pending-requests' ? "#FF6B00" : "white"} 
+                style={pathname === '/pending-requests' ? styles.activeIcon : null}
+              />
+            </TouchableOpacity>
+          </View>
+        )}
+      </View>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
+  gradientBackground: {
+    flex: 1,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+  },
   container: {
     flex: 1,
   },
@@ -57,15 +128,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    backgroundColor: COLORS.primary, // Example background color
+    backgroundColor: 'black',
     paddingVertical: 10,
     position: 'absolute',
     bottom: 20,
     left: 20,
     right: 20,
-    borderRadius: 25, // Rounded corners
-    elevation: 8, // Shadow for Android
-    shadowColor: '#000', // Shadow for iOS
+    borderRadius: 25,
+    elevation: 8,
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
@@ -75,55 +146,17 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   activeNavButton: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: 15,
+    backgroundColor: 'rgba(255, 107, 0, 0.06)',
+    borderRadius: 50,
   },
-  // Styles for Tab Bar (based on Neumorphic design)
-  tabBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    backgroundColor: 'transparent', // Set background to transparent here
-    paddingVertical: 15,
-    paddingHorizontal: 20,
-    borderRadius: 30,
-    height: 80, // Adjust height as needed
-    position: 'absolute', // Positioning for the floating effect
-    bottom: 20,
-    left: 20,
-    right: 20,
-    // Remove shadow properties from here, they will be on the background view
-    borderTopWidth: 0, // Remove default top border
-  },
-   tabBarBackground: {
-    backgroundColor: '#2A2A2A', // Dark grey background
-    borderRadius: 30,
-     position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    shadowColor: '#000',
-    shadowOffset: { width: 5, height: 5 },
-    shadowOpacity: 0.35,
-    shadowRadius: 10,
+  activeIcon: {
+    shadowColor: 'red',
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.6,
+    shadowRadius: 8,
     elevation: 10,
-     // Note: Inner shadow effect requires more advanced techniques or libraries
-  },
-  tabButton: {
-    alignItems: 'center',
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#2A2A2A', // Button background color (can be transparent if background view handles color)
-    justifyContent: 'center',
-     // Apply shadows to the button itself for the raised effect
-    shadowColor: '#000',
-    shadowOffset: { width: 4, height: 4 },
-    shadowOpacity: 0.35,
-    shadowRadius: 5,
-    elevation: 5,
-     // Note: Top/left highlight for a more realistic neumorphic button
-    // would require an overlay View with a lighter shadow or a library.
   },
 });

@@ -64,6 +64,12 @@ export default function ChatScreen() {
   );
 
   return (
+    <LinearGradient
+    colors={[COLORS.background.start, COLORS.background.end]}
+    style={styles.gradientBackground}
+    start={{ x: 0, y: 0 }}
+    end={{ x: 1, y: 1 }}
+  >
     <View style={styles.outerContainer}>
       <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
       <SafeAreaView style={styles.safeArea}>
@@ -104,13 +110,16 @@ export default function ChatScreen() {
         </View>
       </SafeAreaView>
     </View>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
+  gradientBackground: {
+    flex: 1,
+  },
   outerContainer: {
     flex: 1,
-    backgroundColor: COLORS.background.start,
   },
   container: {
     flex: 1,
@@ -129,7 +138,7 @@ const styles = StyleSheet.create({
   headerAvatar: {
     width: 40,
     height:40,
-    borderRadius:50,
+    borderRadius:20,
     marginRight: 12,
     borderWidth: 1,
     borderColor: "#00000070",
@@ -196,12 +205,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     shadowColor: 'white',
     shadowOffset: {
-      width: 8,
+      width: 2,
       height: 2,
     },
     shadowOpacity: 1,
-    shadowRadius: 10,
-    elevation: 30,
+    shadowRadius: 50,
+    elevation: 3,
     overflow: 'hidden',
   },
   
