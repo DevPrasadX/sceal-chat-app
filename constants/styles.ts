@@ -37,7 +37,7 @@ export const commonStyles = StyleSheet.create({
   // Container styles
   container: {
     flex: 1,
-    paddingHorizontal: 24,
+    paddingHorizontal: 12,
   },
   safeArea: {
     flex: 1,
@@ -111,7 +111,7 @@ export const commonStyles = StyleSheet.create({
 
   // Section styles
   section: {
-    marginBottom: 32,
+    marginBottom: 2,
     backgroundColor: 'transparent',
     borderRadius: 16,
     padding: 16,

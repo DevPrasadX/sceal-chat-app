@@ -1,91 +1,162 @@
-import { Poppins_400Regular, Poppins_700Bold, useFonts } from '@expo-google-fonts/poppins';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import React, { useEffect, useState } from 'react';
-import { Text, useColorScheme, View } from 'react-native';
+import { Stack, usePathname, useRouter } from 'expo-router';
+import { Platform, StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { COLORS } from '../constants/styles';
 
-// Keep the splash screen visible while we fetch resources
-SplashScreen.preventAutoHideAsync();
+export default function TabLayout() {
+  const router = useRouter();
+  const pathname = usePathname();
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [fontsLoaded] = useFonts({
-    Poppins_400Regular,
-    Poppins_700Bold,
-  });
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    if (fontsLoaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
-
-  useEffect(() => {
-    checkAuthState();
-  }, []);
-
-  const checkAuthState = async () => {
-    try {
-      const user = await AsyncStorage.getItem('user');
-      setIsAuthenticated(!!user);
-    } catch (error) {
-      console.error('Error checking auth state:', error);
-    }
-  };
-
-  if (!fontsLoaded) {
-    return null;
-  }
+  const shouldShowNavBar = ['/chat', '/calendar', '/pending-requests'].includes(pathname);
 
   return (
     <LinearGradient
-      colors={['#060606', '#484848']}
-      style={{ flex: 1 }}
+      colors={[COLORS.background.start, COLORS.background.end]}
+      style={styles.gradientBackground}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
     >
-      <View style={{ flex: 1, backgroundColor: '#060606' }}>
-        <Stack
-          screenOptions={{
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor="transparent"
+        translucent
+      />
+      <View style={styles.container}>
+        <Stack 
+          screenOptions={{ 
             headerShown: false,
-            contentStyle: {
-              backgroundColor: '#060606',
-            },
-          }}
+            animation: 'slide_from_right',
+            presentation: 'card',
+            contentStyle: { backgroundColor: 'transparent' },
+            animationDuration: 200,
+            gestureEnabled: true,
+            gestureDirection: 'horizontal',
+            fullScreenGestureEnabled: true,
+          }} 
         >
           <Stack.Screen 
-            name="index" 
-            // redirect={isAuthenticated ? '/chat' : undefined}
+            name="settings" 
+            options={{ 
+              presentation: 'card',
+              animation: 'slide_from_right',
+            }} 
           />
-          <Stack.Screen name="login" />
-          <Stack.Screen name="signup" />
-          <Stack.Screen name="chat" />
-          <Stack.Screen name="chat/shared-media" />
-          <Stack.Screen name="settings/index" />
-          <Stack.Screen name="settings/about" />
-          <Stack.Screen name="settings/account" />
-          <Stack.Screen name="settings/appearance" />
-          <Stack.Screen name="settings/help" />
-          <Stack.Screen name="settings/notifications" />
-          <Stack.Screen name="settings/privacy" />
-          <Stack.Screen name="settings/profile" />
+          <Stack.Screen 
+            name="settings/profile" 
+            options={{ 
+              presentation: 'card',
+              animation: 'slide_from_right',
+            }} 
+          />
+          <Stack.Screen 
+            name="settings/privacy" 
+            options={{ 
+              presentation: 'card',
+              animation: 'slide_from_right',
+            }} 
+          />
+          <Stack.Screen 
+            name="settings/notifications" 
+            options={{ 
+              presentation: 'card',
+              animation: 'slide_from_right',
+            }} 
+          />
+          <Stack.Screen 
+            name="settings/about" 
+            options={{ 
+              presentation: 'card',
+              animation: 'slide_from_right',
+            }} 
+          />
         </Stack>
+
+        {shouldShowNavBar && (
+          <View style={styles.navigationBar}>
+            <TouchableOpacity 
+              style={[styles.navButton, pathname === '/chat' && styles.activeNavButton]} 
+              onPress={() => router.replace('/chat')}
+            >
+              <MaterialIcons 
+                name={pathname === '/chat' ? "chat" : "chat-bubble"} 
+                size={24} 
+                color={pathname === '/chat' ? "#FF6B00" : "white"} 
+                style={pathname === '/chat' ? styles.activeIcon : null}
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity 
+              style={[styles.navButton, pathname === '/calendar' && styles.activeNavButton]} 
+              onPress={() => router.replace('/calendar')}
+            >
+              <MaterialIcons 
+                name={pathname === '/calendar' ? "event" : "event-note"} 
+                size={24} 
+                color={pathname === '/calendar' ? "#FF6B00" : "white"} 
+                style={pathname === '/calendar' ? styles.activeIcon : null}
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity 
+              style={[styles.navButton, pathname === '/pending-requests' && styles.activeNavButton]} 
+              onPress={() => router.replace('/pending-requests')}
+            >
+              <MaterialIcons 
+                name={pathname === '/pending-requests' ? "person-add" : "person"} 
+                size={24} 
+                color={pathname === '/pending-requests' ? "#FF6B00" : "white"} 
+                style={pathname === '/pending-requests' ? styles.activeIcon : null}
+              />
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     </LinearGradient>
   );
 }
 
-// Set default text color and font globally
-Text.defaultProps = Text.defaultProps || {};
-Text.defaultProps.style = [
-  { color: '#F5C8BD', fontFamily: 'Poppins_400Regular' },
-  Text.defaultProps.style,
-];
-View.defaultProps = View.defaultProps || {};
-View.defaultProps.style = [
-  { backgroundColor: 'transparent' },
-  View.defaultProps.style,
-];
+const styles = StyleSheet.create({
+  gradientBackground: {
+    flex: 1,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+  },
+  container: {
+    flex: 1,
+  },
+  navigationBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    backgroundColor: 'black',
+    paddingVertical: 10,
+    position: 'absolute',
+    bottom: 20,
+    left: 20,
+    right: 20,
+    borderRadius: 25,
+    elevation: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+  },
+  navButton: {
+    alignItems: 'center',
+    padding: 10,
+  },
+  activeNavButton: {
+    backgroundColor: 'rgba(255, 107, 0, 0.06)',
+    borderRadius: 50,
+  },
+  activeIcon: {
+    shadowColor: 'red',
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.6,
+    shadowRadius: 8,
+    elevation: 10,
+  },
+});
