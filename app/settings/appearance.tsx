@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
+import React, { useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { FONTS } from '../../constants/styles';
 
 export default function AppearanceScreen() {
   const router = useRouter();
@@ -33,9 +34,9 @@ export default function AppearanceScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f7f9fd', padding: 24 },
   backBtn: { marginBottom: 12 },
-  backText: { fontSize: 24, color: '#1877f2', fontWeight: 'bold' },
+  backText: { fontSize: 24, color: '#1877f2', fontFamily: FONTS.bold },
   section: { backgroundColor: '#fff', borderRadius: 16, padding: 18 },
-  label: { fontSize: 16, color: '#222', marginTop: 12 },
+  label: { fontSize: 16, color: '#222', marginTop: 12, fontFamily: FONTS.regular },
   row: { flexDirection: 'row', alignItems: 'center', marginVertical: 8 },
   option: { backgroundColor: '#f2f4f7', borderRadius: 8, padding: 10, marginRight: 10 },
   selected: { backgroundColor: '#1877f2', color: '#fff' },

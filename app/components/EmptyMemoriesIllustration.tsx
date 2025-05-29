@@ -1,0 +1,37 @@
+import React from 'react';
+import { View } from 'react-native';
+import Svg, { Circle, Path, Rect } from 'react-native-svg';
+
+export default function EmptyMemoriesIllustration() {
+  return (
+    <View style={{ width: 200, height: 200 }}>
+      <Svg width="200" height="200" viewBox="0 0 200 200" fill="none">
+        {/* Album Base */}
+        <Rect x="40" y="30" width="120" height="140" rx="8" fill="#252525" stroke="#F5C8BD" strokeWidth="2" />
+        
+        {/* Album Pages */}
+        <Rect x="45" y="35" width="110" height="130" rx="4" fill="#333333" />
+        
+        {/* Photo Frames */}
+        <Rect x="55" y="45" width="90" height="60" rx="4" fill="#1A1A1A" stroke="#F5C8BD" strokeWidth="1" />
+        <Rect x="55" y="115" width="90" height="40" rx="4" fill="#1A1A1A" stroke="#F5C8BD" strokeWidth="1" />
+        
+        {/* Hearts */}
+        <Path d="M30 70C30 70 35 60 45 60C55 60 60 70 60 70C60 70 55 80 45 80C35 80 30 70 30 70Z" fill="#F5C8BD" />
+        <Path d="M140 90C140 90 145 80 155 80C165 80 170 90 170 90C170 90 165 100 155 100C145 100 140 90 140 90Z" fill="#F5C8BD" />
+        <Path d="M85 30C85 30 90 20 100 20C110 20 115 30 115 30C115 30 110 40 100 40C90 40 85 30 85 30Z" fill="#F5C8BD" />
+        
+        {/* Camera Icon */}
+        <Circle cx="100" cy="75" r="15" fill="#F5C8BD" />
+        <Circle cx="100" cy="75" r="8" fill="#1A1A1A" />
+        
+        {/* Decorative Elements */}
+        <Circle cx="70" cy="135" r="3" fill="#F5C8BD" />
+        <Circle cx="85" cy="135" r="3" fill="#F5C8BD" />
+        <Circle cx="100" cy="135" r="3" fill="#F5C8BD" />
+        <Circle cx="115" cy="135" r="3" fill="#F5C8BD" />
+        <Circle cx="130" cy="135" r="3" fill="#F5C8BD" />
+      </Svg>
+    </View>
+  );
+} 

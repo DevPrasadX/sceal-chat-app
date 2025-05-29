@@ -1,4 +1,4 @@
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { Audio } from 'expo-av';
 import * as DocumentPicker from 'expo-document-picker';
 import * as ImagePicker from 'expo-image-picker';
@@ -6,8 +6,9 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import * as Sharing from 'expo-sharing';
 import React, { useState } from 'react';
-import { Dimensions, FlatList, Image, KeyboardAvoidingView, Modal, Platform, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Dimensions, FlatList, Image, KeyboardAvoidingView, Modal, Platform, SafeAreaView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { COLORS, FONTS } from '../../constants/styles';
+import SharedMemoriesScreen from './shared-memories';
 
 interface Message {
   id: string;
@@ -35,6 +36,8 @@ export default function IndividualChatScreen() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentAudioMessageId, setCurrentAudioMessageId] = useState<string | null>(null);
   const [fullscreenImageUri, setFullscreenImageUri] = useState<string | null>(null);
+  const [showMemories, setShowMemories] = useState(false);
+  const [showProfileModal, setShowProfileModal] = useState(false);
 
   const sendMessage = () => {
     if (inputText.trim() === '') return;
@@ -317,69 +320,126 @@ export default function IndividualChatScreen() {
   const { width, height } = Dimensions.get('window');
 
   const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-    },
     safeArea: {
+      flex: 1,
+      backgroundColor: '#1A1A1A',
+    },
+    container: {
       flex: 1,
     },
     header: {
       flexDirection: 'row',
       alignItems: 'center',
-      padding: 16,
+      paddingHorizontal: 16,
+      paddingVertical: 10,
       borderBottomWidth: 1,
       borderBottomColor: '#333',
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.8,
-      shadowRadius: 2,
-      elevation: 5,
+      backgroundColor: '#252525',
+    },
+    headerLeft: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      flex: 1,
     },
     backButton: {
-      marginRight: 10,
-      shadowColor: '#000',
-      shadowOffset: { width: 1, height: 1 },
-      shadowOpacity: 0.5,
-      shadowRadius: 1,
-      elevation: 3,
-      backgroundColor: '#252525',
-      borderRadius: 20,
-      padding: 8,
+      marginRight: 12,
+      padding: 6,
     },
     avatar: {
-      width: 40,
-      height: 40,
-      borderRadius: 20,
-      marginRight: 10,
-      shadowColor: '#000',
-      shadowOffset: { width: 1, height: 1 },
-      shadowOpacity: 0.5,
-      shadowRadius: 1,
-      elevation: 3,
+      width: 36,
+      height: 36,
+      borderRadius: 18,
+      marginRight: 12,
     },
     userInfo: {
       flex: 1,
       justifyContent: 'center',
     },
     headerTitle: {
-      fontSize: 18,
-      fontFamily: FONTS.bold,
-      color: '#F5C8BD',
+      fontSize: 16,
+      fontFamily: FONTS.medium,
+      color: '#fff',
+      marginBottom: 2,
     },
     typingStatus: {
       fontSize: 12,
+      fontFamily: FONTS.regular,
       color: '#B3B3B3',
+    },
+    headerRight: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    memoriesButton: {
+      padding: 8,
+    },
+    chatInfo: {
+      flex: 1,
+    },
+    chatName: {
+      fontSize: 18,
+      fontFamily: FONTS.bold,
+      color: '#F5C8BD',
+      marginBottom: 2,
+    },
+    chatStatus: {
+      fontSize: 14,
+      fontFamily: FONTS.regular,
+      color: '#B3B3B3',
+    },
+    headerButton: {
+      padding: 8,
+      marginLeft: 8,
+    },
+    messageContainer: {
+      flexDirection: 'row',
+      marginBottom: 16,
+      paddingHorizontal: 16,
+    },
+    messageContent: {
+      maxWidth: '80%',
+      padding: 12,
+      borderRadius: 16,
+    },
+    messageText: {
+      fontSize: 16,
+      fontFamily: FONTS.regular,
+      color: '#fff',
+      lineHeight: 22,
+    },
+    messageTime: {
+      fontSize: 12,
+      fontFamily: FONTS.regular,
+      color: '#B3B3B3',
+      marginTop: 4,
+    },
+    inputContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingHorizontal: 16,
+      paddingVertical: 8,
+      backgroundColor: '#252525',
+      borderTopWidth: 1,
+      borderTopColor: '#333',
+    },
+    input: {
+      flex: 1,
+      backgroundColor: '#333',
+      borderRadius: 20,
+      paddingHorizontal: 16,
+      paddingVertical: 8,
+      marginRight: 8,
+      color: '#fff',
+      fontSize: 16,
       fontFamily: FONTS.regular,
     },
-    callButton: {
-      padding: 8,
-      shadowColor: '#000',
-      shadowOffset: { width: 1, height: 1 },
-      shadowOpacity: 0.5,
-      shadowRadius: 1,
-      elevation: 3,
-      backgroundColor: '#252525',
+    sendButton: {
+      width: 40,
+      height: 40,
       borderRadius: 20,
+      backgroundColor: '#F5C8BD',
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     chatList: {
       padding: 16,
@@ -418,12 +478,6 @@ export default function IndividualChatScreen() {
       backgroundColor: '#333',
       borderBottomLeftRadius: 4,
     },
-    messageText: {
-      fontSize: 15,
-      color: '#E6E6E6',
-      fontFamily: FONTS.regular,
-      marginRight: 8,
-    },
     userText: {
       color: '#FFFFFF',
     },
@@ -434,46 +488,6 @@ export default function IndividualChatScreen() {
       fontSize: 10,
       color: '#B3B3B3',
       fontFamily: FONTS.regular,
-    },
-    inputRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      paddingHorizontal: 12,
-      paddingVertical: 8,
-      backgroundColor: '#1E1E1E',
-      borderRadius: 24,
-      marginHorizontal: 16,
-      marginBottom: 10,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 1 },
-      shadowOpacity: 0.5,
-      shadowRadius: 1,
-      elevation: 3,
-    },
-    input: {
-      flex: 1,
-      fontSize: 16,
-      paddingVertical: 10,
-      paddingHorizontal: 8,
-      backgroundColor: 'transparent',
-      color: '#E6E6E6',
-      fontFamily: FONTS.regular,
-      marginRight: 4,
-    },
-    iconButton: {
-      padding: 6,
-      marginLeft: 4,
-      shadowColor: '#000',
-      shadowOffset: { width: 1, height: 1 },
-      shadowOpacity: 0.5,
-      shadowRadius: 1,
-      elevation: 3,
-      backgroundColor: '#1E1E1E',
-      borderRadius: 20,
-    },
-    sendButton: {
-      padding: 6,
-      marginLeft: 4,
     },
     chatImage: {
       width: 200, // Or appropriate styling
@@ -515,6 +529,78 @@ export default function IndividualChatScreen() {
       marginRight: 8,
     },
 
+    inputRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingHorizontal: 12,
+      paddingVertical: 8,
+      backgroundColor: '#252525',
+      borderRadius: 24,
+      marginHorizontal: 16,
+      marginBottom: 10,
+    },
+    iconButton: {
+      padding: 6,
+      marginLeft: 4,
+      backgroundColor: '#333',
+      borderRadius: 20,
+    },
+
+    profileModalSafeArea: {
+      flex: 1,
+      backgroundColor: '#1A1A1A',
+    },
+    profileModalContainer: {
+      flex: 1,
+      backgroundColor: '#1A1A1A',
+      paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+    },
+    modalHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      paddingHorizontal: 16,
+      paddingTop: 16,
+    },
+    modalCloseButton: {
+      padding: 8,
+    },
+    profileInfoContainer: {
+      alignItems: 'center',
+      paddingVertical: 20,
+      borderBottomWidth: 1,
+      borderBottomColor: '#333',
+      marginBottom: 16,
+    },
+    profileAvatar: {
+      width: 80,
+      height: 80,
+      borderRadius: 40,
+      marginBottom: 12,
+    },
+    profileName: {
+      fontSize: 20,
+      fontFamily: FONTS.bold,
+      color: '#fff',
+      marginBottom: 4,
+    },
+    profileStatus: {
+      fontSize: 14,
+      fontFamily: FONTS.regular,
+      color: '#B3B3B3',
+    },
+    sharedMemoriesLabel: {
+      fontSize: 18,
+      fontFamily: FONTS.bold,
+      color: '#fff',
+      marginBottom: 16,
+      paddingHorizontal: 16,
+    },
+    sharedMemoriesContent: {
+      flex: 1,
+      paddingHorizontal: 16,
+    },
+
   });
 
   return (
@@ -528,72 +614,73 @@ export default function IndividualChatScreen() {
           
    
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-            <Ionicons name="arrow-back" size={24} color="#F5C8BD" />
-          </TouchableOpacity>
-          <Image source={{ uri: 'https://randomuser.me/api/portraits/women/41.jpg' }} style={styles.avatar} />
-
-          <View style={styles.userInfo}>
-            <Text style={styles.headerTitle}>{user}</Text>
-            <Text style={styles.typingStatus}>Typing...</Text>
+          <View style={styles.headerLeft}>
+            <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+              <Ionicons name="arrow-back" size={22} color="#fff" />
+            </TouchableOpacity>
+            <Image 
+              source={{ uri: 'https://randomuser.me/api/portraits/women/41.jpg' }} 
+              style={styles.avatar} 
+            />
+            <TouchableOpacity 
+              style={styles.userInfo}
+              onPress={() => setShowProfileModal(true)}
+            >
+              <Text style={styles.headerTitle}>{user}</Text>
+              <Text style={styles.typingStatus}>Typing...</Text>
+            </TouchableOpacity>
           </View>
-
-          <TouchableOpacity style={styles.callButton}>
-            <Ionicons name="call-outline" size={24} color="#F5C8BD" />
-          </TouchableOpacity>
         </View>
 
-        <FlatList
-          data={messages}
-          renderItem={renderMessage}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.chatList}
-        />
-
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          keyboardVerticalOffset={80}
-        >
-          <View style={styles.inputRow}>
-            {/* Emoji/Smiley Icon - Keep as is for now */}
-            {/* Assuming an emoji picker button exists or will be added */} 
-
-            <TextInput
-              style={styles.input}
-              value={inputText}
-              onChangeText={setInputText}
-              placeholder="Type a message..."
-              placeholderTextColor={'#B3B3B3'} // Adjusted placeholder color
+        {showMemories ? (
+          <SharedMemoriesScreen />
+        ) : (
+          <>
+            <FlatList
+              data={messages}
+              renderItem={renderMessage}
+              keyExtractor={(item) => item.id}
+              contentContainerStyle={styles.chatList}
             />
 
-            {/* Attach file button */}
-            <TouchableOpacity style={styles.iconButton} onPress={handleAttachFile}>
-              <Ionicons name="attach-outline" size={24} color="#B3B3B3" />
-            </TouchableOpacity>
+            <KeyboardAvoidingView
+              behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+              keyboardVerticalOffset={80}
+            >
+              <View style={styles.inputRow}>
+                <TextInput
+                  style={styles.input}
+                  value={inputText}
+                  onChangeText={setInputText}
+                  placeholder="Type a message..."
+                  placeholderTextColor={'#B3B3B3'}
+                />
 
-            {/* Camera button */}
-            <TouchableOpacity style={styles.iconButton} onPress={handleOpenCamera}>
-              <Ionicons name="camera-outline" size={24} color="#B3B3B3" />
-            </TouchableOpacity>
+                <TouchableOpacity style={styles.iconButton} onPress={handleAttachFile}>
+                  <Ionicons name="attach-outline" size={24} color="#B3B3B3" />
+                </TouchableOpacity>
 
-            {/* Microphone/Send button */}
-            <TouchableOpacity style={styles.iconButton} onPress={handleAudioAction}>
-               {/* Conditional rendering based on inputText and isRecording */}
-              {inputText === '' ? (
-                isRecording ? (
-                  <Ionicons name="square" size={24} color="red" /> // Stop recording icon
-                ) : (
-                  <Ionicons name="mic-outline" size={24} color="#B3B3B3" /> // Start recording icon
-                )
-              ) : (
-                <Ionicons name="send" size={24} color="#EE3B3B" />
-              )}
-            </TouchableOpacity>
-          </View>
-        </KeyboardAvoidingView>
+                <TouchableOpacity style={styles.iconButton} onPress={handleOpenCamera}>
+                  <Ionicons name="camera-outline" size={24} color="#B3B3B3" />
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.iconButton} onPress={handleAudioAction}>
+                  {inputText === '' ? (
+                    isRecording ? (
+                      <Ionicons name="square" size={24} color="red" />
+                    ) : (
+                      <Ionicons name="mic-outline" size={24} color="#B3B3B3" />
+                    )
+                  ) : (
+                    <Ionicons name="send" size={24} color="#EE3B3B" />
+                  )}
+                </TouchableOpacity>
+              </View>
+            </KeyboardAvoidingView>
+          </>
+        )}
       </SafeAreaView>
 
-      {/* Fullscreen Image Modal */}
       <Modal
         visible={!!fullscreenImageUri}
         transparent={true}
@@ -601,7 +688,7 @@ export default function IndividualChatScreen() {
       >
         <View style={styles.fullscreenContainer}>
           <Image
-            source={{ uri: fullscreenImageUri || '' }} // Provide empty string as fallback
+            source={{ uri: fullscreenImageUri || '' }}
             style={styles.fullscreenImage}
             resizeMode="contain"
           />
@@ -614,7 +701,39 @@ export default function IndividualChatScreen() {
         </View>
       </Modal>
 
-      </LinearGradient>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={showProfileModal}
+        onRequestClose={() => setShowProfileModal(false)}
+      >
+        <SafeAreaView style={styles.profileModalSafeArea}>
+          <View style={styles.profileModalContainer}>
+            <View style={styles.modalHeader}>
+              <TouchableOpacity onPress={() => setShowProfileModal(false)} style={styles.modalCloseButton}>
+                <MaterialIcons name="close" size={24} color="#fff" />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.profileInfoContainer}>
+                <Image 
+                    source={{ uri: 'https://randomuser.me/api/portraits/women/41.jpg' }} 
+                    style={styles.profileAvatar}
+                />
+                <Text style={styles.profileName}>{user}</Text>
+                <Text style={styles.profileStatus}>Online</Text>
+            </View>
+
+            <Text style={styles.sharedMemoriesLabel}>Shared Memories</Text>
+
+            <View style={styles.sharedMemoriesContent}>
+              <SharedMemoriesScreen hideHeader={true} />
+            </View>
+
+          </View>
+        </SafeAreaView>
+      </Modal>
+
+    </LinearGradient>
 
 
   );
