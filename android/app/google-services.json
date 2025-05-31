@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "939743021095",
+    "project_id": "sceal-chat-app",
+    "storage_bucket": "sceal-chat-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:939743021095:android:5ad9e67eb4c75f86cb2602",
+        "android_client_info": {
+          "package_name": "com.sceal.chat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9ckrXPupGnKdgyWnAoAB0u4s-HHd_-p8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
