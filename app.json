@@ -15,20 +15,38 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Allow SCÉAL to access your photos to add them to events.",
+        "NSCameraUsageDescription": "Allow SCÉAL to access your camera to add photos to events.",
+        "NSMicrophoneUsageDescription": "Allow SCÉAL to access your microphone to add videos to events."
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#060606"
-      }
+      },
+      "permissions": [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/images/icon.png"
     },
     "plugins": [
       "expo-router",
-      "expo-font"
+      "expo-font",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow SCÉAL to access your photos to add them to events.",
+          "cameraPermission": "Allow SCÉAL to access your camera to add photos to events."
+        }
+      ]
     ],
     "scheme": "sceal"
   }

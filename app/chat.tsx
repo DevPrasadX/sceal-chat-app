@@ -79,9 +79,14 @@ export default function ChatScreen() {
               <Image source={{ uri: 'https://randomuser.me/api/portraits/men/1.jpg' }} style={styles.headerAvatar} />
             </TouchableOpacity>
             <Text style={styles.headerTitle}>Chats</Text>
-            <TouchableOpacity style={styles.addButton}>
-              <Ionicons name="add" size={24} color="#fff" />
-            </TouchableOpacity>
+            <View style={styles.headerButtons}>
+              <TouchableOpacity 
+                style={styles.addButton}
+                onPress={() => router.push('/search-users')}
+              >
+                <Ionicons name="add" size={24} color="#fff" />
+              </TouchableOpacity>
+            </View>
           </View>
 
           <View style={styles.searchContainer}>
@@ -155,6 +160,10 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontFamily: FONTS.bold,
     color: '#E6E6E6',
+  },
+  headerButtons: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   addButton: {
     backgroundColor: COLORS.primary,

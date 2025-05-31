@@ -2,14 +2,14 @@ import { StyleSheet } from 'react-native';
 
 // Theme Colors
 export const COLORS = {
-  primary: '#F5C8BD',
+  primary: '#FF6B00',
   background: {
     start: '#060606',
     end: '#484848',
   },
   text: {
-    primary: '#F5C8BD',
-    secondary: '#CCCCCC',
+    primary: '#FFFFFF',
+    secondary: 'rgba(255, 255, 255, 0.7)',
     placeholder: '#999999',
   },
   input: {
@@ -17,8 +17,8 @@ export const COLORS = {
     border: '#484848',
   },
   button: {
-    background: '#F5C8BD',
-    text: '#222222',
+    background: '#FF6B00',
+    text: '#FFFFFF',
   },
   social: {
     background: '#FFFFFF',

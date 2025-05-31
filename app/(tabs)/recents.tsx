@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
-import { useRouter } from 'expo-router';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
+import React from 'react';
+import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { FONTS } from '../../constants/styles';
 
 const chatRooms = [
   { id: '1', user: 'Lily Fallen', lastMessage: 'Hey, how are you?', time: '14:30', avatar: 'https://randomuser.me/api/portraits/women/41.jpg' },
@@ -181,6 +182,6 @@ const styles = StyleSheet.create({
   lastMessage: {
     fontSize: 16,
     color: '#F5C8BD',
-    fontFamily: 'Poppins_400Regular',
+    fontFamily: FONTS.regular,
   },
 }); 

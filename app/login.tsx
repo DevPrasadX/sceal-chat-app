@@ -16,8 +16,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, FONTS, commonStyles } from '../constants/styles';
 
 export default function LoginScreen() {
-  const [email, setEmail] = useState(''); // Using email based on image
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -25,6 +26,7 @@ export default function LoginScreen() {
       return;
     }
 
+    setIsLoading(true);
     try {
       // Clear any existing data first
       await AsyncStorage.clear();
@@ -33,6 +35,8 @@ export default function LoginScreen() {
       router.replace('/chat');
     } catch (error) {
       Alert.alert('Error', 'Failed to login');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -68,6 +72,7 @@ export default function LoginScreen() {
                 onChangeText={setEmail}
                 keyboardType="email-address"
                 autoCapitalize="none"
+                editable={!isLoading}
               />
 
               <Text style={commonStyles.label}>Password</Text>
@@ -78,6 +83,7 @@ export default function LoginScreen() {
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry
+                editable={!isLoading}
               />
 
               <View style={styles.optionsContainer}>
@@ -85,34 +91,58 @@ export default function LoginScreen() {
                   <View style={styles.checkboxPlaceholder} />
                   <Text style={styles.optionsText}>Remember me</Text>
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => router.push('/forgot-password')}>
                   <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
                 </TouchableOpacity>
               </View>
 
-              <TouchableOpacity style={commonStyles.button} onPress={handleLogin}>
-                <Text style={commonStyles.buttonText}>Log In</Text>
+              <TouchableOpacity 
+                style={[commonStyles.button, isLoading && styles.disabledButton]} 
+                onPress={handleLogin}
+                disabled={isLoading}
+              >
+                <Text style={commonStyles.buttonText}>
+                  {isLoading ? 'Logging in...' : 'Log In'}
+                </Text>
               </TouchableOpacity>
 
               <Text style={styles.orText}>Or</Text>
 
               <View style={styles.socialButtonsContainer}>
-                <TouchableOpacity style={commonStyles.socialButton} onPress={() => handleSocialLogin('google')}>
+                <TouchableOpacity 
+                  style={[commonStyles.socialButton, isLoading && styles.disabledButton]} 
+                  onPress={() => handleSocialLogin('google')}
+                  disabled={isLoading}
+                >
                   <Ionicons name="logo-google" size={24} color="#DB4437" />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={commonStyles.socialButton} onPress={() => handleSocialLogin('facebook')}>
+                <TouchableOpacity 
+                  style={[commonStyles.socialButton, isLoading && styles.disabledButton]} 
+                  onPress={() => handleSocialLogin('facebook')}
+                  disabled={isLoading}
+                >
                   <Ionicons name="logo-facebook" size={24} color="#4267B2" />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={commonStyles.socialButton} onPress={() => handleSocialLogin('apple')}>
+                <TouchableOpacity 
+                  style={[commonStyles.socialButton, isLoading && styles.disabledButton]} 
+                  onPress={() => handleSocialLogin('apple')}
+                  disabled={isLoading}
+                >
                   <Ionicons name="logo-apple" size={24} color="#000000" />
                 </TouchableOpacity>
               </View>
             </View>
 
-            <TouchableOpacity style={commonStyles.link} onPress={() => router.push('/signup')}>
-              <Text style={commonStyles.linkText}>Don't have an account? <Text style={{ color: '#007AFF', fontFamily: FONTS.bold }}>Sign Up</Text></Text>
+            <TouchableOpacity 
+              style={commonStyles.link} 
+              onPress={() => router.push('/signup')}
+              disabled={isLoading}
+            >
+              <Text style={commonStyles.linkText}>
+                Don't have an account? <Text style={{ color: '#007AFF', fontFamily: FONTS.bold }}>Sign Up</Text>
+              </Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -185,5 +215,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginVertical: 24,
     gap: 20,
+  },
+  disabledButton: {
+    opacity: 0.5,
   },
 }); 
