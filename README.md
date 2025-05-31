@@ -113,6 +113,26 @@ A modern, feature-rich chat application built with React Native and Expo, design
   - Image optimization
   - Smooth animations
 
+## Recent Updates
+
+### UI/UX Improvements
+- Simplified chat list interface
+  - Removed pending requests icon for cleaner header
+  - Streamlined navigation with direct access to user search
+  - Enhanced visual hierarchy in chat list
+
+### User Management
+- Added user search functionality
+  - Dedicated search users screen
+  - Real-time search filtering
+  - User profile cards with request actions
+
+### Authentication
+- Enhanced authentication flow
+  - Added forgot password functionality
+  - Improved login and signup experience
+  - Optimized skeleton loading for internal screens
+
 ## Getting Started
 
 ### Prerequisites
