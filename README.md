@@ -219,5 +219,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Contact
 
-Your Name - [@yourtwitter](https://twitter.com/yourtwitter)
+Your Name - Prasad Pansare 
 Project Link: [https://github.com/yourusername/sceal-chat-app](https://github.com/yourusername/sceal-chat-app)
